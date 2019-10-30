@@ -1,8 +1,12 @@
 import React from "react";
 
-const Dashboard = props => {
-  const tasks = props.tasks;
-  const getColor = item => {
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.tasks = props.tasks;
+  }
+  getColor = item => {
     switch (item.status) {
       case "done":
         return "green";
@@ -14,20 +18,27 @@ const Dashboard = props => {
     }
   };
 
-  const handleClick = (item, e) => {
+  handleClick = (item, e) => {
     e.preventDefault();
     alert(item.description);
   };
 
-  return (
-    <div>
-      {tasks.map(item => (
-        <div style={{ color: getColor(item) }} onClick={handleClick}>
-          item.description item.estimation
-        </div>
-      ))}
-    </div>
-  );
-};
+  render = () => {
+    return (
+      <div>
+        {this.tasks.map(item => (
+          // <a href="blank" onClick={e => handleClick(item, e)}>
+          <div
+            style={{ color: this.getColor(item) }}
+            onClick={e => this.handleClick(item, e)}
+          >
+            {item.description} {item.estimation}
+          </div>
+          // </a>
+        ))}
+      </div>
+    );
+  };
+}
 
 export default Dashboard;
