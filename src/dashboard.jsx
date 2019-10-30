@@ -4,7 +4,9 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.tasks = props.tasks;
+    this.state = {
+      tasks: props.tasks
+    };
   }
   getColor = item => {
     switch (item.status) {
@@ -12,25 +14,35 @@ class Dashboard extends React.Component {
         return "green";
       case "on going":
         return "red";
+      case "not started":
+        return "blue";
 
       default:
         return "black";
     }
   };
 
-  handleClick = (item, e) => {
+  handleClick = (item, index, e) => {
     e.preventDefault();
-    alert(item.description);
+    if (item.status === "on going") {
+      let auxTasks = [...this.state.tasks]; // create the copy of state array
+      auxTasks[index].status = "done"; //new value
+      this.setState({
+        tasks: auxTasks
+      });
+    } // if
   };
 
   render = () => {
+    const tasks = this.state.tasks;
     return (
       <div>
-        {this.tasks.map(item => (
+        {tasks.map((item, index) => (
           // <a href="blank" onClick={e => handleClick(item, e)}>
           <div
-            style={{ color: this.getColor(item) }}
-            onClick={e => this.handleClick(item, e)}
+            key={index}
+            style={{ color: this.getColor(item), cursor: "pointer" }}
+            onClick={e => this.handleClick(item, index, e)}
           >
             {item.description} {item.estimation}
           </div>
