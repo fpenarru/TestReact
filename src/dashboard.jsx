@@ -31,6 +31,18 @@ class Dashboard extends React.Component {
         tasks: auxTasks
       });
     } // if
+    if (item.status === "not started") {
+      let auxTasks = [...this.state.tasks]; // create the copy of state array
+      auxTasks[index].status = "on going"; //new value
+      this.setState({
+        tasks: auxTasks
+      });
+    } // if
+  };
+
+  handleOnSubmit = e => {
+    e.preventDefault();
+    alert("On submit");
   };
 
   render = () => {
@@ -42,12 +54,27 @@ class Dashboard extends React.Component {
           <div
             key={index}
             style={{ color: this.getColor(item), cursor: "pointer" }}
-            onClick={e => this.handleClick(item, index, e)}
+            onClick={
+              item.status !== "done"
+                ? e => this.handleClick(item, index, e)
+                : null
+            }
           >
             {item.description} {item.estimation}
           </div>
           // </a>
         ))}
+        <div align="left">
+          <form name="myForm" onSubmit={this.handleOnSubmit}>
+            New task: <input name="description" />
+            <select name="status">
+              <option value="not started">Not Started</option>
+              <option value="on going">On Going</option>
+              <option value="done">Done</option>
+            </select>
+            <input type="submit" value="Add new task" />
+          </form>
+        </div>
       </div>
     );
   };
